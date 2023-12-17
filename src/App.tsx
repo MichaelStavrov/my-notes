@@ -1,12 +1,9 @@
 import { Button } from 'antd';
 import styles from './App.module.scss';
+import RootRoutes from './routes/RootRoutes';
 
 function App() {
-  return (
-    <div>
-      <Button type='primary'>Button</Button>
-    </div>
-  );
+  return <RootRoutes />;
 }
 
 export default App;
