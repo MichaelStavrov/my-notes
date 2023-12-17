@@ -1,9 +1,13 @@
-import { Button } from 'antd';
-import styles from './App.module.scss';
 import RootRoutes from './routes/RootRoutes';
+import AuthProvider from './context/AuthProvider';
+import styles from './App.module.scss';
 
 function App() {
-  return <RootRoutes />;
+  return (
+    <AuthProvider>
+      <RootRoutes />
+    </AuthProvider>
+  );
 }
 
 export default App;

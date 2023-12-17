@@ -16,7 +16,7 @@ interface AuthState {
   signOut: (cb: () => void) => void;
 }
 
-const AuthContext = createContext<AuthState>({} as AuthState);
+const AuthContext = createContext<AuthState>({ user: null } as AuthState);
 
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
