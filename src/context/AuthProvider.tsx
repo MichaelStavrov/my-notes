@@ -12,6 +12,7 @@ interface User {
 
 interface AuthState {
   user: User | null;
+  signUp: (newUser: User, cb: () => void) => void;
   signIn: (newUser: User, cb: () => void) => void;
   signOut: (cb: () => void) => void;
 }
@@ -20,6 +21,11 @@ const AuthContext = createContext<AuthState>({ user: null } as AuthState);
 
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+
+  const signUp = (newUser: User, cb: () => void) => {
+    setUser(newUser);
+    cb();
+  };
 
   const signIn = (newUser: User, cb: () => void) => {
     setUser(newUser);
@@ -33,6 +39,7 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const state: AuthState = {
     user,
+    signUp,
     signIn,
     signOut,
   };

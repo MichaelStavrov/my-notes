@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router';
 import { RoutesMap } from './routesMap';
 import PrivateRoutes from '@/components/PrivateRoutes';
 import Notes from '@/pages/Notes';
-import SignIn from '@/pages/SignIn';
+import AuthPage from '@/pages/AuthPage';
 
 const RootRoutes = () => {
   return (
@@ -16,7 +16,7 @@ const RootRoutes = () => {
           </PrivateRoutes>
         }
       />
-      <Route path={RoutesMap.signIn} element={<SignIn />} />
+      <Route path={RoutesMap.auth} element={<AuthPage />} />
     </Routes>
   );
 };

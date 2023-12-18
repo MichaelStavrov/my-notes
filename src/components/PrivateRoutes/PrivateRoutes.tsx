@@ -8,9 +8,7 @@ const PrivateRoutes: FC<PropsWithChildren> = ({ children }) => {
   const { pathname } = useLocation();
 
   if (auth.user === null) {
-    return (
-      <Navigate to={RoutesMap.signIn} state={{ from: pathname }} replace />
-    );
+    return <Navigate to={RoutesMap.auth} state={{ from: pathname }} replace />;
   }
 
   return <>{children}</>;

@@ -1,5 +1,5 @@
 export enum RoutesMap {
   notes = '/',
-  signIn = '/signin',
+  auth = '/auth',
   notFound = '/*',
 }
