@@ -31,7 +31,7 @@ const AuthForm = <T,>({
         onFinishFailed={onFinishFailed}
       >
         {fields.map((field) => (
-          <Form.Item {...field}>
+          <Form.Item key={field.label} {...field}>
             {field.name === 'password' ? <Input.Password /> : <Input />}
           </Form.Item>
         ))}
