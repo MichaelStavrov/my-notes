@@ -2,6 +2,7 @@ import React, {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useState,
 } from 'react';
@@ -22,44 +23,50 @@ const AuthContext = createContext<AuthState>({ user: null } as AuthState);
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const getUser = async (login: string) => {
+  const getUser = useCallback(async (login: string) => {
     const user = await userService.fetchUser(login);
 
     return user;
-  };
+  }, []);
 
-  const signUp = async (data: User, cb: () => void, errorCb?: () => void) => {
-    const userIsExist = await getUser(data.login);
+  const signUp = useCallback(
+    async (data: User, cb: () => void, errorCb?: () => void) => {
+      const userIsExist = await getUser(data.login);
 
-    if (userIsExist) {
-      errorCb?.();
-    } else {
-      const newUser: User = {
-        ...data,
-        password: encryptPassword(data.password),
-      };
+      if (userIsExist) {
+        errorCb?.();
+      } else {
+        const newUser: User = {
+          ...data,
+          password: encryptPassword(data.password),
+        };
 
-      await userService.createUser(newUser);
-      setUser(newUser);
-      cb();
-    }
-  };
+        await userService.createUser(newUser);
+        setUser(newUser);
+        cb();
+      }
+    },
+    [getUser]
+  );
 
-  const signIn = async (data: User, cb: () => void, errorCb?: () => void) => {
-    const applicant = await getUser(data.login);
+  const signIn = useCallback(
+    async (data: User, cb: () => void, errorCb?: () => void) => {
+      const applicant = await getUser(data.login);
 
-    if (applicant && data.password === decryptPassword(applicant.password)) {
-      setUser(applicant);
-      cb();
-    } else {
-      errorCb?.();
-    }
-  };
+      if (applicant && data.password === decryptPassword(applicant.password)) {
+        setUser(applicant);
+        cb();
+      } else {
+        errorCb?.();
+      }
+    },
+    [getUser]
+  );
 
-  const signOut = (cb: () => void) => {
+  const signOut = useCallback((cb: () => void) => {
     setUser(null);
     cb();
-  };
+  }, []);
 
   const state: AuthState = {
     user,

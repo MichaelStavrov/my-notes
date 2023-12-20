@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styles from './Notes.module.scss';
 import { db } from '@/api/db';
 import { Button } from 'antd';
 import { useNotes } from '@/context/NotesProvider';
+import Sidebar from '@/components/Sidebar';
 
 const Notes: FC = () => {
   const { addNote, getNotes } = useNotes();
@@ -18,13 +19,19 @@ const Notes: FC = () => {
   return (
     <section className={styles.notes}>
       <div className={styles.header}>header</div>
-      <div className={styles.sidebar}>sidebar</div>
+      <div className={styles.sidebar}>
+        <Sidebar />
+      </div>
       <div className={styles.workspace}>
         <Button onClick={deleteNotes}>Delete Notes</Button>
         <Button onClick={deleteUsers}>Delete Users</Button>
         <Button
           onClick={() => {
-            addNote({ name: 'Note', content: 'content' });
+            addNote({
+              name: 'Note',
+              content:
+                'contentcontentcontentcontentcontentcontentcontentcontentcontent',
+            });
           }}
         >
           Create Note

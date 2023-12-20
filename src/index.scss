@@ -5,6 +5,7 @@
 }
 
 :root {
+  --gray: #938e8e;
   --light-gray: #edecec;
   --danger: #ff4d4f;
 }
@@ -22,4 +23,18 @@ body {
 
 .dangerColor {
   color: var(--danger);
+}
+
+ul,
+li {
+  margin:0;
+  padding: 0;
+  text-indent: 0;
+  list-style-type: none;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
 }

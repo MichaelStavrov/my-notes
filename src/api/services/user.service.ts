@@ -15,7 +15,6 @@ const service = {
   async fetchUser(login: string) {
     try {
       const user = await db.users.where({ login }).toArray();
-      console.log('user ', user);
 
       return user ? user[0] : null;
     } catch (error) {

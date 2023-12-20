@@ -1,0 +1,8 @@
+@import '../../styles/mixins.scss';
+
+.sidebar {
+  height: 100%;
+  overflow-y: auto;
+
+  @include nonScrollBar;
+}

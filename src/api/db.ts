@@ -7,8 +7,8 @@ export class MyNotesDB extends Dexie {
 
   constructor() {
     super('MyNotesDB');
-    this.version(3).stores({
-      notes: '++id, name, content, ownerId',
+    this.version(4).stores({
+      notes: '++id, name, content, ownerId, creationDate',
       users: '++id, login, password',
     });
   }

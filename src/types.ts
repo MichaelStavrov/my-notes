@@ -3,6 +3,7 @@ export interface Note {
   name: string;
   content: string;
   ownerId: number;
+  creationDate: string;
 }
 
 export interface User {

@@ -1,11 +1,14 @@
 import React, { FC, PropsWithChildren } from 'react';
 import AuthProvider from '@/context/AuthProvider';
 import NotesProvider from '@/context/NotesProvider';
+import ActiveNoteProvider from '@/context/ActiveNoteProvider';
 
 const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
     <AuthProvider>
-      <NotesProvider>{children}</NotesProvider>
+      <NotesProvider>
+        <ActiveNoteProvider>{children}</ActiveNoteProvider>
+      </NotesProvider>
     </AuthProvider>
   );
 };

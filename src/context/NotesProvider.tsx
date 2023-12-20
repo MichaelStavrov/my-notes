@@ -2,6 +2,7 @@ import React, {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useState,
 } from 'react';
@@ -27,25 +28,36 @@ const NotesProvider: FC<PropsWithChildren> = ({ children }) => {
   const [notes, setNotes] = useState<Note[]>([]);
   const { user } = useAuth();
 
-  const getNotes = async () => {
+  const getNotes = useCallback(async () => {
     if (user?.id) {
       const newNotes = await notesService.fetchNotes(user?.id);
       if (newNotes) setNotes(newNotes);
     }
-  };
+  }, [user?.id]);
 
-  const addNote = async ({ name, content }: AddNoteProps) => {
-    if (user?.id) {
-      await notesService.createNote({ name, content, ownerId: user?.id });
+  const addNote = useCallback(
+    async ({ name, content }: AddNoteProps) => {
+      if (user?.id) {
+        await notesService.createNote({
+          name,
+          content,
+          ownerId: user?.id,
+          creationDate: new Date().toLocaleDateString(),
+        });
+        await getNotes();
+      }
+    },
+    [getNotes, user?.id]
+  );
+
+  const removeNote = useCallback(
+    async (noteId: number) => {
+      await notesService.deleteNote(noteId);
+
       await getNotes();
-    }
-  };
-
-  const removeNote = async (noteId: number) => {
-    await notesService.deleteNote(noteId);
-
-    await getNotes();
-  };
+    },
+    [getNotes]
+  );
 
   const state: NotesState = {
     notes,
