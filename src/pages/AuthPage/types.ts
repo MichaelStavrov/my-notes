@@ -6,4 +6,5 @@ export interface Field {
   name: string;
   label: string;
   rules: Rule[];
+  dependencies?: string[];
 }

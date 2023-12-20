@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import { useAuth } from '@/context/AuthProvider';
@@ -10,13 +10,16 @@ const SignIn: FC = () => {
   const auth = useAuth();
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [invalidAuthData, setInvalidAuthData] = useState(false);
 
   const onFinish = (values: Values) => {
-    auth.signIn({ name: values.login }, () => {
-      navigate(state?.from);
-    });
-
-    console.log('Success:', values);
+    auth.signIn(
+      values,
+      () => {
+        navigate(state?.from);
+      },
+      () => setInvalidAuthData(true)
+    );
   };
 
   const onFinishFailed = (errorInfo: ValidateErrorEntity<Values>) => {
@@ -24,7 +27,10 @@ const SignIn: FC = () => {
   };
 
   return (
-    <AuthForm currentForm='signin' {...{ fields, onFinish, onFinishFailed }} />
+    <AuthForm
+      currentForm='signin'
+      {...{ fields, onFinish, onFinishFailed, invalidAuthData }}
+    />
   );
 };
 

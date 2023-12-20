@@ -14,6 +14,17 @@ export const fields: Field[] = [
   {
     label: 'Повторите пароль',
     name: 'confirmPassword',
-    rules: [{ required: true, message: 'Повторите пароль' }],
+    dependencies: ['password'],
+    rules: [
+      { required: true, message: 'Повторите пароль' },
+      ({ getFieldValue }) => ({
+        validator(_, value) {
+          if (!value || getFieldValue('password') === value) {
+            return Promise.resolve();
+          }
+          return Promise.reject(new Error('Пароли должны совпадать'));
+        },
+      }),
+    ],
   },
 ];

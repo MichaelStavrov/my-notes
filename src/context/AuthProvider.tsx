@@ -5,15 +5,15 @@ import React, {
   useContext,
   useState,
 } from 'react';
-
-interface User {
-  name: string;
-}
+import userService from '@/api/services/user.service';
+import { encryptPassword } from '@/utils/encryptPassword';
+import { decryptPassword } from '@/utils/decryptPassword';
+import { User } from '@/types';
 
 interface AuthState {
   user: User | null;
-  signUp: (newUser: User, cb: () => void) => void;
-  signIn: (newUser: User, cb: () => void) => void;
+  signUp: (newUser: User, cb: () => void, errorCb?: () => void) => void;
+  signIn: (newUser: User, cb: () => void, errorCb?: () => void) => void;
   signOut: (cb: () => void) => void;
 }
 
@@ -22,14 +22,38 @@ const AuthContext = createContext<AuthState>({ user: null } as AuthState);
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const signUp = (newUser: User, cb: () => void) => {
-    setUser(newUser);
-    cb();
+  const getUser = async (login: string) => {
+    const user = await userService.fetchUser(login);
+
+    return user;
   };
 
-  const signIn = (newUser: User, cb: () => void) => {
-    setUser(newUser);
-    cb();
+  const signUp = async (data: User, cb: () => void, errorCb?: () => void) => {
+    const userIsExist = await getUser(data.login);
+
+    if (userIsExist) {
+      errorCb?.();
+    } else {
+      const newUser: User = {
+        ...data,
+        password: encryptPassword(data.password),
+      };
+
+      await userService.createUser(newUser);
+      setUser(newUser);
+      cb();
+    }
+  };
+
+  const signIn = async (data: User, cb: () => void, errorCb?: () => void) => {
+    const applicant = await getUser(data.login);
+
+    if (applicant && data.password === decryptPassword(applicant.password)) {
+      setUser(applicant);
+      cb();
+    } else {
+      errorCb?.();
+    }
   };
 
   const signOut = (cb: () => void) => {

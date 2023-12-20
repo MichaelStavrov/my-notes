@@ -9,6 +9,8 @@ interface AuthFormProps<T> {
   fields: Field[];
   onFinish: (values: T) => void;
   onFinishFailed: (errorInfo: ValidateErrorEntity<T>) => void;
+  loginIsExist?: boolean;
+  invalidAuthData?: boolean;
 }
 
 const AuthForm = <T,>({
@@ -16,6 +18,8 @@ const AuthForm = <T,>({
   fields,
   onFinish,
   onFinishFailed,
+  loginIsExist,
+  invalidAuthData,
 }: AuthFormProps<T>) => {
   const isSignUpForm = currentForm === 'signup';
 
@@ -24,6 +28,12 @@ const AuthForm = <T,>({
       <Typography.Title>
         {isSignUpForm ? 'Регистрация' : 'Вход'}
       </Typography.Title>
+      {loginIsExist && (
+        <span className='dangerColor'>Такой логин уже занят</span>
+      )}
+      {invalidAuthData && (
+        <span className='dangerColor'>Неверные логин и/или пароль</span>
+      )}
       <Form
         className={styles.form}
         layout='vertical'
@@ -32,7 +42,11 @@ const AuthForm = <T,>({
       >
         {fields.map((field) => (
           <Form.Item key={field.label} {...field}>
-            {field.name === 'password' ? <Input.Password /> : <Input />}
+            {['password', 'confirmPassword'].includes(field.name) ? (
+              <Input.Password />
+            ) : (
+              <Input />
+            )}
           </Form.Item>
         ))}
         <Flex justify='center'>

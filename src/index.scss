@@ -6,6 +6,7 @@
 
 :root {
   --light-gray: #edecec;
+  --danger: #ff4d4f;
 }
 
 body {
@@ -17,4 +18,8 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dangerColor {
+  color: var(--danger);
 }

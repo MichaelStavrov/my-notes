@@ -1,12 +1,12 @@
 import RootRoutes from './routes/RootRoutes';
-import AuthProvider from './context/AuthProvider';
+import Providers from './components/Providers';
 import styles from './App.module.scss';
 
 function App() {
   return (
-    <AuthProvider>
+    <Providers>
       <RootRoutes />
-    </AuthProvider>
+    </Providers>
   );
 }
 
