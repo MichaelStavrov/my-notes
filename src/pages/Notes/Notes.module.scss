@@ -12,7 +12,6 @@
 }
 
 .header {
-  height: 40px;
   grid-area: header;
   border-bottom: 1px solid var(--light-gray);
 }
@@ -26,4 +25,8 @@
 .workspace {
   height: 500px;
   grid-area: workspace;
+}
+
+.noteContent {
+  padding: 8px;
 }

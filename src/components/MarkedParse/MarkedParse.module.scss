@@ -2,7 +2,7 @@
 
 .markedParse {
   & > * {
-
     @include textEllipsis;
+    line-height: 140%;
   }
 }

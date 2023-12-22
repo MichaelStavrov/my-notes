@@ -30,10 +30,10 @@ interface NotesState {
 const NotesContext = createContext<NotesState>({} as NotesState);
 
 const NotesProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { user } = useAuth();
   const [notes, setNotes] = useState<Note[]>([]);
   const [updatedNote, setUpdatedNote] = useState<Note | null>(null);
   const [activeNote, setActiveNote] = useState<Note | null>(null);
-  const { user } = useAuth();
 
   const changeActiveNote = useCallback((note: Note) => setActiveNote(note), []);
 
@@ -71,7 +71,7 @@ const NotesProvider: FC<PropsWithChildren> = ({ children }) => {
     async (noteId: number) => {
       await notesService.deleteNote(noteId);
 
-      await getNotes();
+      await getNotes((newNotes) => setActiveNote(newNotes[0]));
     },
     [getNotes]
   );

@@ -10,7 +10,10 @@ interface TextEditorProps {
 }
 
 const TextEditor: FC<TextEditorProps> = ({ activeNote, onChange }) => {
-  const value = `${activeNote.name ?? ''}\n${activeNote.content ?? ''}`;
+  const titleWithDescription = `${activeNote.name ?? ''}\n${
+    activeNote.content ?? ''
+  }`;
+  const value = activeNote.name ? titleWithDescription : activeNote.content;
   const [innerValue, setInnerValue] = useState(value);
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const TextEditor: FC<TextEditorProps> = ({ activeNote, onChange }) => {
       spellChecker: false,
       status: false,
     };
-  }, []);
+  }, [activeNote.id]);
 
   return (
     <SimpleMdeReact

@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import MarkedParse from '@/components/MarkedParse';
-import styles from './ListItem.module.scss';
 import { Note } from '@/types';
+import styles from './ListItem.module.scss';
 
 interface ListItemProps {
   note: Note;

@@ -1,14 +1,16 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useNotes } from '@/context/NotesProvider';
 import Sidebar from '@/components/Sidebar';
 import TextEditor from '@/components/TextEditor';
 import Header from '@/components/Header';
 import { useAuth } from '@/context/AuthProvider';
+import MarkedParse from '@/components/MarkedParse';
 import styles from './Notes.module.scss';
 
 const Notes: FC = () => {
   const { updateNote, activeNote } = useNotes();
   const { user } = useAuth();
+  const [isOpenEditor, setIsOpenEditor] = useState(false);
 
   const handleChange = useCallback(
     (value: string) => {
@@ -33,14 +35,26 @@ const Notes: FC = () => {
   return (
     <section className={styles.notes}>
       <div className={styles.header}>
-        <Header />
+        <Header
+          onEdit={() => setIsOpenEditor(true)}
+          closeEdit={() => setIsOpenEditor(false)}
+        />
       </div>
       <div className={styles.sidebar}>
-        <Sidebar />
+        <Sidebar onCloseEditor={() => setIsOpenEditor(false)} />
       </div>
       <div className={styles.workspace}>
         {activeNote && (
-          <TextEditor activeNote={activeNote} onChange={handleChange} />
+          <>
+            {isOpenEditor ? (
+              <TextEditor activeNote={activeNote} onChange={handleChange} />
+            ) : (
+              <div className={styles.noteContent}>
+                <MarkedParse value={activeNote.name} />
+                <MarkedParse value={activeNote.content} />
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
