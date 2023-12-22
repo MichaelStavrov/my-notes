@@ -13,11 +13,16 @@
     "antd": "^5.12.2",
     "dexie": "^3.2.4",
     "dexie-react-hooks": "^1.1.7",
+    "dompurify": "^3.0.6",
+    "easymde": "^2.18.0",
+    "marked": "^11.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.0"
+    "react-router-dom": "^6.21.0",
+    "react-simplemde-editor": "^5.2.0"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/react-router-dom": "^5.3.3",

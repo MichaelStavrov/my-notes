@@ -13,10 +13,6 @@
   }
 }
 
-.title {
-  font-weight: 700;
-}
-
 .description {
   display: flex;
   gap: 8px;
@@ -25,6 +21,4 @@
 
 .content {
   color: var(--gray);
-  max-width: 70px;
-  @include textEllipsis;
 }

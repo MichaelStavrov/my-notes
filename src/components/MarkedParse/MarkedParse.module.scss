@@ -1,0 +1,8 @@
+@import '../../styles/mixins.scss';
+
+.markedParse {
+  & > * {
+
+    @include textEllipsis;
+  }
+}
