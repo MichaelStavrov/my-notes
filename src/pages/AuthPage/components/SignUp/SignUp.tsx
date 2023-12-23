@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import { useAuth } from '@/context/AuthProvider';
+import { RoutesMap } from '@/routes/routesMap';
 import AuthForm from '../AuthForm';
 import { Values } from '../AuthForm/types';
 import { fields } from './fields';
@@ -16,7 +17,7 @@ const SignUp: FC = () => {
     auth.signUp(
       { login, password },
       () => {
-        navigate(state?.from);
+        navigate(state?.from ?? RoutesMap.notes);
       },
       () => setLoginIsExist(true)
     );
