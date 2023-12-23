@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useNotes } from '@/context/NotesProvider';
 import ListItem from './components/ListItem';
 import { Note } from '@/types';

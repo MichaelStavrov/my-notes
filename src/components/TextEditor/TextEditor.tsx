@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { SimpleMdeReact } from 'react-simplemde-editor';
 import { Note } from '@/types';
 import 'easymde/dist/easymde.min.css';

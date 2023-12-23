@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { RoutesMap } from '@/routes/routesMap';
 import { useAuth } from '@/context/AuthProvider';

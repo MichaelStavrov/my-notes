@@ -1,21 +1,36 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Button } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
   FileAddOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 import { useNotes } from '@/context/NotesProvider';
 import Modal from '../Modal';
 import styles from './Header.module.scss';
+import SearchField from '../SearchField';
+import { useAuth } from '@/context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import { RoutesMap } from '@/routes/routesMap';
 
 interface HeaderProps {
+  isOpenEditor: boolean;
   onEdit: () => void;
   closeEdit: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ onEdit, closeEdit }) => {
-  const { addNote, removeNote, activeNote } = useNotes();
+const Header: FC<HeaderProps> = ({ onEdit, closeEdit, isOpenEditor }) => {
+  const { signOut } = useAuth();
+  const {
+    addNote,
+    removeNote,
+    activeNote,
+    filterNotes,
+    setActiveNote,
+    resetNotes,
+  } = useNotes();
+  const navigate = useNavigate();
   const [openConfirmRemoveModal, setOpenConfirmRemoveModal] = useState(false);
 
   const handleAddNoteClick = () => {
@@ -40,6 +55,19 @@ const Header: FC<HeaderProps> = ({ onEdit, closeEdit }) => {
     setOpenConfirmRemoveModal(false);
   };
 
+  const handleSearchInputChange = (value: string) => {
+    filterNotes(value);
+    if (isOpenEditor) closeEdit();
+  };
+
+  const onLogout = () => {
+    signOut(() => {
+      resetNotes();
+      setActiveNote(null);
+      navigate(RoutesMap.auth);
+    });
+  };
+
   return (
     <div className={styles.header}>
       <h1>Мои Заметки</h1>
@@ -58,6 +86,16 @@ const Header: FC<HeaderProps> = ({ onEdit, closeEdit }) => {
           className={styles.icon}
           onClick={onEdit}
           title='Редактировать'
+        />
+      </div>
+      <div className={styles.block}>
+        <div className={styles.searchField}>
+          <SearchField onChange={handleSearchInputChange} />
+        </div>
+        <LogoutOutlined
+          className={styles.icon}
+          onClick={onLogout}
+          title='Выйти из профиля'
         />
       </div>
       <Modal

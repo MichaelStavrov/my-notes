@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import MarkedParse from '@/components/MarkedParse';
 import { Note } from '@/types';
 import styles from './ListItem.module.scss';
@@ -29,6 +29,7 @@ const ListItem: FC<ListItemProps> = ({
       style={{ backgroundColor: isActive ? 'var(--light-gray)' : undefined }}
       className={styles.item}
       onClick={() => onItemClick(note)}
+      id={id?.toString()}
     >
       <MarkedParse value={name} maxEllipsis={140} />
       <div className={styles.description}>

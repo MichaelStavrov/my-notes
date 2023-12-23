@@ -1,7 +1,8 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import { useAuth } from '@/context/AuthProvider';
+import { RoutesMap } from '@/routes/routesMap';
 import AuthForm from '../AuthForm';
 import { Values } from '../AuthForm/types';
 import { fields } from './fields';
@@ -16,7 +17,7 @@ const SignIn: FC = () => {
     auth.signIn(
       values,
       () => {
-        navigate(state?.from);
+        navigate(state?.from ?? RoutesMap.notes);
       },
       () => setInvalidAuthData(true)
     );

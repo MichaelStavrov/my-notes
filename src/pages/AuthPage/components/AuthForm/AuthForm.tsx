@@ -1,4 +1,3 @@
-import React, { FC } from 'react';
 import { Button, Flex, Form, Input, Typography } from 'antd';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import { Field, FormType } from '../../types';

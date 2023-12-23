@@ -1,4 +1,4 @@
-import React, {
+import {
   FC,
   PropsWithChildren,
   createContext,
@@ -16,15 +16,18 @@ interface AddNoteProps {
 }
 
 interface NotesState {
+  initialNotes: Note[];
   notes: Note[];
   updatedNote: Note | null;
   activeNote: Note | null;
-  setActiveNote: (note: Note) => void;
+  setActiveNote: (note: Note | null) => void;
   getNotes: (cb?: (notes: Note[]) => void) => void;
   addNote: (note: AddNoteProps) => void;
   removeNote: (noteId: number) => void;
   removeAllNotes: () => void;
   updateNote: (noteId: number, newNote: Note) => void;
+  filterNotes: (value: string) => void;
+  resetNotes: () => void;
 }
 
 const NotesContext = createContext<NotesState>({} as NotesState);
@@ -32,16 +35,36 @@ const NotesContext = createContext<NotesState>({} as NotesState);
 const NotesProvider: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAuth();
   const [notes, setNotes] = useState<Note[]>([]);
+  const [initialNotes, setInitialNotes] = useState<Note[]>([]);
   const [updatedNote, setUpdatedNote] = useState<Note | null>(null);
   const [activeNote, setActiveNote] = useState<Note | null>(null);
 
-  const changeActiveNote = useCallback((note: Note) => setActiveNote(note), []);
+  const changeActiveNote = useCallback(
+    (note: Note | null) => setActiveNote(note),
+    []
+  );
+
+  const filterNotes = useCallback(
+    (value: string) => {
+      const lowerValue = value.toLocaleLowerCase();
+      const filteredNotes = initialNotes.filter(
+        ({ name, content }) =>
+          name.toLocaleLowerCase().includes(lowerValue) ||
+          content.toLocaleLowerCase().includes(lowerValue)
+      );
+
+      setNotes(filteredNotes);
+      setActiveNote(filteredNotes[0]);
+    },
+    [initialNotes]
+  );
 
   const getNotes = useCallback(
     async (cb?: (notes: Note[]) => void) => {
       if (user?.id) {
         const newNotes = await notesService.fetchNotes(user?.id);
         if (newNotes) {
+          setInitialNotes(newNotes);
           setNotes(newNotes);
           cb?.(newNotes);
         }
@@ -86,7 +109,10 @@ const NotesProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const updateNote = useCallback(
     async (noteId: number, newNote: Note) => {
-      await notesService.patchNote(noteId, newNote);
+      await notesService.patchNote(noteId, {
+        ...newNote,
+        creationDate: new Date().toLocaleDateString(),
+      });
 
       if (user?.id) {
         const note = await notesService.fetchOneNote(user?.id, noteId);
@@ -101,7 +127,13 @@ const NotesProvider: FC<PropsWithChildren> = ({ children }) => {
     [getNotes, user?.id]
   );
 
+  const resetNotes = useCallback(() => {
+    setNotes([]);
+    setInitialNotes([]);
+  }, []);
+
   const state: NotesState = {
+    initialNotes,
     notes,
     updatedNote,
     activeNote,
@@ -111,6 +143,8 @@ const NotesProvider: FC<PropsWithChildren> = ({ children }) => {
     removeNote,
     updateNote,
     removeAllNotes,
+    filterNotes,
+    resetNotes,
   };
 
   return (

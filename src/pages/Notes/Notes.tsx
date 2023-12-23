@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useNotes } from '@/context/NotesProvider';
 import Sidebar from '@/components/Sidebar';
 import TextEditor from '@/components/TextEditor';
@@ -36,6 +36,7 @@ const Notes: FC = () => {
     <section className={styles.notes}>
       <div className={styles.header}>
         <Header
+          isOpenEditor={isOpenEditor}
           onEdit={() => setIsOpenEditor(true)}
           closeEdit={() => setIsOpenEditor(false)}
         />

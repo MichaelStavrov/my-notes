@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, ReactNode } from 'react';
+import { CSSProperties, FC, ReactNode } from 'react';
 import { Modal as AntModal } from 'antd';
 import Portal from '../Portal';
 

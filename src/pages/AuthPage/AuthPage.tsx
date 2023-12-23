@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from 'antd';
 import SignIn from '@/pages/AuthPage/components/SignIn';
 import SignUp from '@/pages/AuthPage/components/SignUp';
